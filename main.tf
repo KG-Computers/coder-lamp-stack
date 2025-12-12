@@ -132,18 +132,19 @@ module "code-server" {
   agent_id = coder_agent.main.id
   order    = 1
 
+  display_name = "VS Code Web"
   additional_args = "--disable-workspace-trust"
   folder   = "/home/coder/project"
 }
 
 # See https://registry.coder.com/modules/coder/filebrowser
-module "filebrowser" {
-  count    = data.coder_workspace.me.start_count
-  source   = "registry.coder.com/coder/filebrowser/coder"
-  version  = "1.1.3"
-  agent_id = coder_agent.main.id
-  folder   = "/home/coder/project"
-}
+# module "filebrowser" {
+#  count    = data.coder_workspace.me.start_count
+#  source   = "registry.coder.com/coder/filebrowser/coder"
+#  version  = "1.1.3"
+#  agent_id = coder_agent.main.id
+#  folder   = "/home/coder/project"
+# }
 
 # See https://registry.coder.com/modules/coder/vscode-desktop
 module "vscode" {
@@ -152,6 +153,7 @@ module "vscode" {
   version  = "1.2.0"
   agent_id = coder_agent.main.id
   folder   = "/home/coder/project"
+  hide_entrypoint = true  # 👈 prevents double registration
 }
 
 # See https://registry.coder.com/modules/coder/antigravity
@@ -159,7 +161,7 @@ module "antigravity" {
   count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/coder/antigravity/coder"
   version  = "1.0.0"
-  agent_id = coder_agent.example.id
+  agent_id = coder_agent.main.id
 }
 
 resource "docker_volume" "home_volume" {
